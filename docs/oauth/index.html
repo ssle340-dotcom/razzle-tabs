@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Razzle Tabs</title>
+  <style>
+    body { font-family: sans-serif; margin: 2rem; line-height: 1.4; }
+    a { color: #8a5a00; }
+  </style>
+</head>
+<body>
+  <p>Returning to Razzle Tabs…</p>
+  <p><a id="open" href="razzletabs://oauth">Open Razzle Tabs</a></p>
+  <script>
+    var keep = ["code", "error", "error_reason", "error_description", "state"];
+    var incoming = new URLSearchParams(window.location.search);
+    var outgoing = new URLSearchParams();
+    for (var i = 0; i < keep.length; i++) {
+      var key = keep[i];
+      if (!incoming.has(key)) continue;
+      var value = incoming.get(key) || "";
+      if (value.slice(-2) === "#_") value = value.slice(0, -2);
+      if (value.length) outgoing.append(key, value);
+    }
+    var query = outgoing.toString();
+    var target = "razzletabs://oauth" + (query ? "?" + query : "");
+    var link = document.getElementById("open");
+    link.href = target;
+    window.location.replace(target);
+  </script>
+</body>
+</html>
